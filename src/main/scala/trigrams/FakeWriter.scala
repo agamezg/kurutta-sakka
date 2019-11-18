@@ -1,47 +1,27 @@
 package trigrams
 
+import scala.collection.mutable.ListBuffer
+
 object FakeWriter {
 
-  def read(text: String): Map[String, List[String]] = {
-    val trigramsMap = Map.empty[String, List[String]]
+  def read(text: String): Map[String, ListBuffer[String]] = {
+    var trigramsMap = Map.empty[String, ListBuffer[String]]
     val wordsArray = text.split(" ")
     val wordsArrayLenght = wordsArray.length
+    var i = 0
 
-    if (text.isEmpty || wordsArrayLenght == 2) {
-      trigramsMap
+    var key: String = ""
+    while (i < wordsArrayLenght - 2) {
+      key = "%s %s".format(wordsArray(i), wordsArray(i + 1))
+      if (trigramsMap.contains(key)) {
+        trigramsMap(key) += wordsArray(i + 2)
+      }
+      else {
+        trigramsMap += (key -> ListBuffer(wordsArray(i + 2)))
+      }
+      i += 1
     }
-    else if (wordsArrayLenght == 3) {
-      Map("si quiero," -> List("entonces"))
-    }
-    else if (wordsArrayLenght == 4) {
-      Map("si quiero," -> List("entonces"),
-        "quiero, entonces" -> List("puedo;"))
-    }
-    else if (wordsArrayLenght == 5) {
-      Map("si quiero," -> List("entonces"),
-        "quiero, entonces" -> List("puedo;"),
-        "entonces puedo;" -> List("entonces"))
-    }
-    else if (wordsArrayLenght == 6) {
-      Map("si quiero," -> List("entonces"),
-        "quiero, entonces" -> List("puedo;"),
-        "entonces puedo;" -> List("entonces"),
-        "puedo; entonces" -> List("puedo;"))
-    }
-    else if (wordsArrayLenght == 7) {
-      Map("si quiero," -> List("entonces"),
-        "quiero, entonces" -> List("puedo;"),
-        "entonces puedo;" -> List("entonces", "pues"),
-        "puedo; entonces" -> List("puedo;"))
-    }
-    // wordsArrayLenght lengh 8
-    else {
-      Map("si quiero," -> List("entonces"),
-        "quiero, entonces" -> List("puedo;"),
-        "entonces puedo;" -> List("entonces", "pues"),
-        "puedo; entonces" -> List("puedo;"),
-        "puedo; pues" -> List("quiero"))
-    }
+    trigramsMap
   }
 }
 
