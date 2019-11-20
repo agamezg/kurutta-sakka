@@ -2,7 +2,7 @@ package trigrams
 
 import scala.collection.mutable.ListBuffer
 
-object FakeWriter {
+object DrunkWritter {
 
   def read(text: String): Map[String, ListBuffer[String]] = {
     var trigramsMap = Map.empty[String, ListBuffer[String]]
